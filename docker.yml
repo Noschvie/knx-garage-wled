@@ -4,11 +4,14 @@ on:
   push:
     branches:
       - main
+      - development
     tags:
-      - "v*.*.*"
+      - "v[0-9][0-9][0-9][0-9].[0-9][0-9].[0-9][0-9]"
+      - "v[0-9][0-9][0-9][0-9].[0-9][0-9].[0-9][0-9].[0-9]*"
   pull_request:
     branches:
       - main
+      - development
 
 env:
   REGISTRY: ghcr.io
@@ -40,7 +43,8 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
             type=ref,event=branch
-            type=ref,event=tag
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
             type=sha,prefix=sha-,format=short
 
       - name: Build and push Docker image
