@@ -696,7 +696,7 @@ async function run() {
                 if (isTokenRefresh) {
                     // No backoff during scheduled token refresh; reconnect immediately with the new token.
                     reconnectAttempts = 0;
-                    scheduleReconnect();
+                    setTimeout(connect, 0);
                 } else if (!intentional) {
                     scheduleReconnect();
                 }
