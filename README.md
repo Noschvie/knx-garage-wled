@@ -7,7 +7,7 @@ current door state.
 
 ## Requirements
 
-- Running `knx-runtime-engine` server with OAuth2 (Keycloak)
+- Running [`semantic-knx-gateway`](https://github.com/Noschvie/semantic-knx-gateway) (`knx-runtime-engine`) server with OAuth2 (Keycloak)
 - WLED controller reachable in the same network
 - Docker (recommended) **or** Node.js ≥ 18 with `ws` package for standalone use
 

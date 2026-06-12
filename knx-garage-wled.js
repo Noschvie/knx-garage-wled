@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: CC-BY-NC-SA-4.0
 // Copyright (c) 2026 Noschvie
-// KNX Runtime Engine - https://github.com/Noschvie/knx-garage-wled.git
+// semantic-knx-gateway - https://github.com/Noschvie/semantic-knx-gateway
+// knx-garage-wled      - https://github.com/Noschvie/knx-garage-wled.git
 
 import WebSocket from 'ws';
 
@@ -690,12 +691,13 @@ async function run() {
                 console.log(`[${timestamp()}] WebSocket closed (${code}): ${reasonStr}`);
 
                 const isTokenRefresh = reasonStr === 'token-refresh';
-                const intentional = shuttingDown || code === 1000 || reasonStr === 'user-interrupt';
+                const isInactivity   = reasonStr === 'inactivity-timeout';
+                const intentional    = shuttingDown || (code === 1000 && !isInactivity) || reasonStr === 'user-interrupt';
 
                 if (isTokenRefresh) {
                     // No backoff during scheduled token refresh; reconnect immediately with the new token.
                     reconnectAttempts = 0;
-                    scheduleReconnect();
+                    setTimeout(connect, 0);
                 } else if (!intentional) {
                     scheduleReconnect();
                 }
