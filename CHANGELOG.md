@@ -8,6 +8,8 @@ for multiple releases on the same day.
 
 ## [Unreleased]
 
+## [v2026.06.12.1] - 2026-06-12
+
 ### Fixed
 - Token-refresh reconnect no longer goes through `scheduleReconnect()`;
   `reconnectAttempts` is reset to 0 and `connect()` is called directly via
@@ -38,5 +40,6 @@ for multiple releases on the same day.
 - Docker support with `json-file` logging
 - All timestamps in `Europe/Vienna` timezone
 
-[Unreleased]: https://github.com/noschvie/knx-garage-wled/compare/v2026.06.12...HEAD
+[Unreleased]: https://github.com/noschvie/knx-garage-wled/compare/v2026.06.12.1...HEAD
+[v2026.06.12.1]: https://github.com/noschvie/knx-garage-wled/compare/v2026.06.12...v2026.06.12.1
 [v2026.06.12]: https://github.com/noschvie/knx-garage-wled/releases/tag/v2026.06.12
