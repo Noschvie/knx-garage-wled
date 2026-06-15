@@ -282,3 +282,15 @@ Datapoint : GA=5/1/6  datapointId=GA-5  "Garage door status moving"
 [2026-06-06 20:15:24.321] 💡 WLED → 🟢 open
 [2026-06-06 20:15:24.322] ⏱ WLED auto-off in 60s (open)
 ```
+
+# License
+
+This project is licensed under the GNU General Public License v3.0 or later (GPL-3.0-or-later).
+
+See the LICENSE file for details.
+
+# Disclaimer
+
+KNX is a trademark of the KNX Association.
+
+This project is an independent implementation and is not affiliated with, endorsed by, or sponsored by the KNX Association.
