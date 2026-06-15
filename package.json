@@ -2,7 +2,7 @@
   "name": "knx-garage-wled",
   "version": "1.0.0",
   "description": "KNX garage door state → WLED bridge",
-  "license": "CC-BY-NC-SA-4.0",
+  "license": "GPL-3.0-or-later",
   "type": "module",
   "main": "knx-garage-wled.js",
   "scripts": {

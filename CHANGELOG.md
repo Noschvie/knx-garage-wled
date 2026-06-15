@@ -8,6 +8,12 @@ for multiple releases on the same day.
 
 ## [Unreleased]
 
+## [v2026.06.15] - 2026-06-15
+
+### Changed
+- License changed from `CC-BY-NC-SA-4.0` to `GPL-3.0-or-later`.
+- `package.json`: `license` field updated to `GPL-3.0-or-later`.
+
 ## [v2026.06.12.1] - 2026-06-12
 
 ### Fixed
@@ -40,6 +46,7 @@ for multiple releases on the same day.
 - Docker support with `json-file` logging
 - All timestamps in `Europe/Vienna` timezone
 
-[Unreleased]: https://github.com/noschvie/knx-garage-wled/compare/v2026.06.12.1...HEAD
+[Unreleased]: https://github.com/noschvie/knx-garage-wled/compare/v2026.06.15...HEAD
+[v2026.06.15]: https://github.com/noschvie/knx-garage-wled/compare/v2026.06.12.1...v2026.06.15
 [v2026.06.12.1]: https://github.com/noschvie/knx-garage-wled/compare/v2026.06.12...v2026.06.12.1
 [v2026.06.12]: https://github.com/noschvie/knx-garage-wled/releases/tag/v2026.06.12
