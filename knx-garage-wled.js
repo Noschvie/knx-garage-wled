@@ -11,6 +11,9 @@ const oauthClientId     = process.env.OAUTH_CLIENT_ID;
 const oauthClientSecret = process.env.OAUTH_CLIENT_SECRET;
 const wledIp            = process.env.WLED_IP;
 
+const API_VERSION = '/api/v2';
+const apiBaseUrl  = `${apiUrl}${API_VERSION}`;
+
 // KNX Group Addresses - garage door status
 const GA_OPEN   = '5/1/3';   // true  = door fully open  (top limit switch)
 const GA_CLOSED = '5/1/4';   // false = door fully closed (bottom limit switch)
@@ -392,7 +395,7 @@ class TokenHolder {
 // -- Datapoint lookup --
 
 async function fetchDatapointMetaByGA(ga, readToken) {
-    const url = new URL(`${apiUrl}/api/v1/datapoints`);
+    const url = new URL(`${apiBaseUrl}/datapoints`);
     url.searchParams.set('filter[ga]', ga);
 
     const response = await fetch(url.toString(), {
@@ -417,7 +420,7 @@ async function fetchDatapointMetaByGA(ga, readToken) {
 async function fetchInitialValues(dpMap, readToken) {
     const entries = [...dpMap.entries()]; // [[datapointId, {ga, name}], ...]
     await Promise.all(entries.map(async ([datapointId, { ga }]) => {
-        const url = `${apiUrl}/api/v1/datapoints/${datapointId}`;
+        const url = `${apiBaseUrl}/datapoints/${datapointId}`;
         const response = await fetch(url, {
             headers: { Authorization: `Bearer ${readToken}` }
         });
