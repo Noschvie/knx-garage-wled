@@ -8,6 +8,17 @@ for multiple releases on the same day.
 
 ## [Unreleased]
 
+## [v2026.06.20] - 2026-06-20
+
+### Added
+- 🔒 Token-refresh safeguards and clean shutdown handling added.
+
+### Changed
+- Docker Compose updated to use development image from GitHub Container Registry.
+- API base URL updated to include versioning (`v2`).
+- `.gitignore` pattern corrected (`.idea/` entry fixed, `.iml` file removed).
+- README and CHANGELOG: grammar, punctuation, and formatting improvements.
+
 ## [v2026.06.15] - 2026-06-15
 
 ### Changed
@@ -46,7 +57,8 @@ for multiple releases on the same day.
 - Docker support with `json-file` logging
 - All timestamps in `Europe/Vienna` timezone
 
-[Unreleased]: https://github.com/noschvie/knx-garage-wled/compare/v2026.06.15...HEAD
+[Unreleased]: https://github.com/noschvie/knx-garage-wled/compare/v2026.06.20...HEAD
+[v2026.06.20]: https://github.com/noschvie/knx-garage-wled/compare/v2026.06.15...v2026.06.20
 [v2026.06.15]: https://github.com/noschvie/knx-garage-wled/compare/v2026.06.12.1...v2026.06.15
 [v2026.06.12.1]: https://github.com/noschvie/knx-garage-wled/compare/v2026.06.12...v2026.06.12.1
 [v2026.06.12]: https://github.com/noschvie/knx-garage-wled/releases/tag/v2026.06.12
