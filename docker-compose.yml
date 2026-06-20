@@ -2,8 +2,7 @@
 
 services:
   knx-garage-wled:
-    build: .
-    image: knx-garage-wled:latest
+    image: ghcr.io/noschvie/knx-garage-wled:development
     container_name: knx-garage-wled
     restart: unless-stopped
     env_file:
