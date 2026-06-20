@@ -355,6 +355,7 @@ class TokenHolder {
 
     async init() {
         const { accessToken, expiresAt } = await fetchToken(this.scope);
+        if (this._destroyed) return this.accessToken; // guard: token refresh arrived after destroy()
         this.accessToken = accessToken;
         this.expiresAt   = expiresAt;
         this._scheduleRefresh();
@@ -389,7 +390,10 @@ class TokenHolder {
         }, msUntilRefresh);
     }
 
-    destroy() { clearTimeout(this._refreshTimer); }
+    destroy() {
+        clearTimeout(this._refreshTimer);
+        this._destroyed = true;
+    }
 }
 
 // -- Datapoint lookup --
@@ -486,7 +490,11 @@ async function run() {
         shuttingDown = true;
         manageHolder.destroy();
         readHolder.destroy();
-        process.exit(0);
+
+        // Close any active WebSocket connection cleanly
+        ws?.close(1000, 'shutdown');
+        // Allow in-flight fetch() calls to complete or abort before exiting
+        setTimeout(() => process.exit(0), 500);
     });
 
     process.on('SIGINT', () => {
