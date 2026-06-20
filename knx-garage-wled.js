@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: CC-BY-NC-SA-4.0
+// SPDX-License-Identifier: GPL-3.0-or-later
 // Copyright (c) 2026 Noschvie
 // semantic-knx-gateway - https://github.com/Noschvie/semantic-knx-gateway
 // knx-garage-wled      - https://github.com/Noschvie/knx-garage-wled.git
@@ -10,6 +10,9 @@ const apiUrl            = process.env.API_URL;
 const oauthClientId     = process.env.OAUTH_CLIENT_ID;
 const oauthClientSecret = process.env.OAUTH_CLIENT_SECRET;
 const wledIp            = process.env.WLED_IP;
+
+const API_VERSION = '/api/v2';
+const apiBaseUrl  = `${apiUrl}${API_VERSION}`;
 
 // KNX Group Addresses - garage door status
 const GA_OPEN   = '5/1/3';   // true  = door fully open  (top limit switch)
@@ -352,6 +355,7 @@ class TokenHolder {
 
     async init() {
         const { accessToken, expiresAt } = await fetchToken(this.scope);
+        if (this._destroyed) return this.accessToken; // guard: token refresh arrived after destroy()
         this.accessToken = accessToken;
         this.expiresAt   = expiresAt;
         this._scheduleRefresh();
@@ -386,13 +390,16 @@ class TokenHolder {
         }, msUntilRefresh);
     }
 
-    destroy() { clearTimeout(this._refreshTimer); }
+    destroy() {
+        clearTimeout(this._refreshTimer);
+        this._destroyed = true;
+    }
 }
 
 // -- Datapoint lookup --
 
 async function fetchDatapointMetaByGA(ga, readToken) {
-    const url = new URL(`${apiUrl}/api/v1/datapoints`);
+    const url = new URL(`${apiBaseUrl}/datapoints`);
     url.searchParams.set('filter[ga]', ga);
 
     const response = await fetch(url.toString(), {
@@ -417,7 +424,7 @@ async function fetchDatapointMetaByGA(ga, readToken) {
 async function fetchInitialValues(dpMap, readToken) {
     const entries = [...dpMap.entries()]; // [[datapointId, {ga, name}], ...]
     await Promise.all(entries.map(async ([datapointId, { ga }]) => {
-        const url = `${apiUrl}/api/v1/datapoints/${datapointId}`;
+        const url = `${apiBaseUrl}/datapoints/${datapointId}`;
         const response = await fetch(url, {
             headers: { Authorization: `Bearer ${readToken}` }
         });
@@ -483,7 +490,11 @@ async function run() {
         shuttingDown = true;
         manageHolder.destroy();
         readHolder.destroy();
-        process.exit(0);
+
+        // Close any active WebSocket connection cleanly
+        ws?.close(1000, 'shutdown');
+        // Allow in-flight fetch() calls to complete or abort before exiting
+        setTimeout(() => process.exit(0), 500);
     });
 
     process.on('SIGINT', () => {

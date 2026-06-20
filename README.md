@@ -15,14 +15,14 @@ current door state.
 
 All parameters are set via environment variables:
 
-| Variable                | Description                                                           |
-|-------------------------|-----------------------------------------------------------------------|
-| `API_URL`               | URL of the `knx-runtime-engine` server                               |
-| `OAUTH_CLIENT_ID`       | OAuth2 Client ID                                                      |
-| `OAUTH_CLIENT_SECRET`   | OAuth2 Client Secret                                                  |
-| `WLED_IP`               | IP address of the WLED controller                                     |
-| `WLED_OPEN_TIMEOUT_MS`  | Auto-off after "open" state in ms — green turns off. `0` = disabled  |
-| `WLED_CLOSED_TIMEOUT_MS`| Auto-off after "closed" state in ms — spots turn off. `0` = disabled |
+| Variable                  | Description                                                             |
+| ------------------------- | ----------------------------------------------------------------------- |
+| `API_URL`                 | URL of the `knx-runtime-engine` server                                  |
+| `OAUTH_CLIENT_ID`         | OAuth2 Client ID                                                        |
+| `OAUTH_CLIENT_SECRET`     | OAuth2 Client Secret                                                    |
+| `WLED_IP`                 | IP address of the WLED controller                                       |
+| `WLED_OPEN_TIMEOUT_MS`    | Auto-off after "open" state in ms — green turns off. `0` = disabled     |
+| `WLED_CLOSED_TIMEOUT_MS`  | Auto-off after "closed" state in ms — spots turn off. `0` = disabled    |
 
 ## Running with Docker (recommended)
 
@@ -98,11 +98,11 @@ node knx-garage-wled.js
 
 ## KNX Group Addresses
 
-| GA      | Name                               | DPT      | Logic                                            |
-|---------|------------------------------------|----------|--------------------------------------------------|
-| `5/1/3` | Garage door status open (top)      | DPST-1-2 | `true` = door at top (open)                     |
-| `5/1/4` | Garage door status closed (bottom) | DPST-1-2 | `false` = door at bottom (closed) — **inverted** |
-| `5/1/6` | Garage door status moving          | DPST-1-2 | `true` = door is moving                         |
+| GA        | Name                                 | DPT        | Logic                                              |
+| --------- | ------------------------------------ | ---------- | -------------------------------------------------- |
+| `5/1/3`   | Garage door status open (top)        | DPST-1-2   | `true` = door at top (open)                        |
+| `5/1/4`   | Garage door status closed (bottom)   | DPST-1-2   | `false` = door at bottom (closed) — **inverted**   |
+| `5/1/6`   | Garage door status moving            | DPST-1-2   | `true` = door is moving                            |
 
 GA `5/1/4` is a normally closed contact and is evaluated inverted: `false`
 means closed, `true` means not closed.
@@ -111,12 +111,12 @@ means closed, `true` means not closed.
 
 The three GAs are evaluated in priority order. The first matching condition wins:
 
-| Priority    | Condition        | WLED Effect                           |
-|-------------|------------------|---------------------------------------|
-| 1 (highest) | `5/1/6 = true`   | 🔴 Red, animated (fx 60) — moving    |
-| 2           | `5/1/3 = true`   | 🟢 Green, static — open              |
-| 3           | `5/1/4 = false`  | ⚪ White, spot pattern — closed       |
-| —           | Intermediate     | No WLED call, last state retained     |
+| Priority      | Condition          | WLED Effect                             |
+| ------------- | ------------------ | --------------------------------------- |
+| 1 (highest)   | `5/1/6 = true`     | 🔴 Red, animated (fx 60) — moving        |
+| 2             | `5/1/3 = true`     | 🟢 Green, static — open                  |
+| 3             | `5/1/4 = false`    | ⚪ White, spot pattern — closed          |
+| —             | Intermediate       | No WLED call, last state retained       |
 
 WLED is only updated when the state actually changes — redundant identical
 calls are suppressed. On startup the script waits until all three GAs have
@@ -127,13 +127,13 @@ delivered their initial value before triggering the first WLED call.
 After reaching a stable state (`open` or `closed`) a timer starts automatically.
 Once it expires, WLED is turned off via `{ on: false }`:
 
-| State       | Timeout variable         | Default | Effect              |
-|-------------|--------------------------|---------|---------------------|
-| 🟢 open     | `WLED_OPEN_TIMEOUT_MS`   | 1 min   | Green turns off     |
-| ⚪ closed   | `WLED_CLOSED_TIMEOUT_MS` | 2 min   | Spots turn off      |
+| State         | Timeout variable           | Default   | Effect                |
+| ------------- | -------------------------- | --------- | --------------------- |
+| 🟢 open        | `WLED_OPEN_TIMEOUT_MS`     | 1 min     | Green turns off       |
+| ⚪ closed      | `WLED_CLOSED_TIMEOUT_MS`   | 2 min     | Spots turn off        |
 
 As soon as the door starts moving again (`moving = true`), any running timer is
-immediately cancelled — the strip stays on during movement. The timer restarts
+immediately canceled — the strip stays on during movement. The timer restarts
 after the next stable state is reached.
 
 Set a timeout to `0` to disable auto-off for that state:
@@ -147,18 +147,18 @@ WLED_CLOSED_TIMEOUT_MS=0  # spots stay on permanently
 
 Every completed door movement is timed and evaluated against a rolling
 statistics window. This allows detecting early signs of drive degradation —
-e.g. worn rollers, weakened springs, or a motor struggling under load.
+e.g., worn rollers, weakened springs, or a motor struggling under load.
 
 ### How it works
 
 When GA `5/1/6` transitions to `true`, the current timestamp is recorded and
 the movement direction is derived from the current limit-switch state:
 
-| Condition at start          | Derived direction |
-|-----------------------------|-------------------|
-| GA `5/1/3 = true` (top)     | `closing`         |
-| GA `5/1/4 = false` (bottom) | `opening`         |
-| Neither limit active        | `unknown`         |
+| Condition at start            | Derived direction   |
+| ----------------------------- | ------------------- |
+| GA `5/1/3 = true` (top)       | `closing`           |
+| GA `5/1/4 = false` (bottom)   | `opening`           |
+| Neither limit active          | `unknown`           |
 
 When GA `5/1/6` returns to `false`, the elapsed time is logged together with
 the actually reached end position (verified from the limit switches).
@@ -167,7 +167,7 @@ the actually reached end position (verified from the limit switches).
 
 Travel times are collected in separate ring buffers for `opening` and
 `closing`, each holding the last **20** completed runs (`STATS_WINDOW`).
-Once at least 3 runs are recorded per direction, min/max/mean are printed
+Once at least three runs are recorded per direction, min/max/mean are printed
 after every completed movement.
 
 If the current travel time exceeds the rolling mean by more than **20 %**
@@ -175,7 +175,7 @@ If the current travel time exceeds the rolling mean by more than **20 %**
 
 ### Plausibility check
 
-After every state update the script verifies that top and bottom limit
+After every state update, the script verifies that top and bottom limit
 switches are not both active at the same time. If they are, a `⚠` warning
 is logged immediately — this indicates a wiring or sensor fault.
 
@@ -228,7 +228,7 @@ force-refreshed.
 
 All three datapoints are subscribed in a single subscription message. On an
 unexpected connection drop, the script automatically reconnects with exponential
-backoff (1s → 2s → 4s → ... → max. 60s, up to 10 attempts).
+backoff (1 s → 2 s → 4 s → ... → max. 60 s, up to 10 attempts).
 
 ### Value Conversion
 
@@ -282,3 +282,15 @@ Datapoint : GA=5/1/6  datapointId=GA-5  "Garage door status moving"
 [2026-06-06 20:15:24.321] 💡 WLED → 🟢 open
 [2026-06-06 20:15:24.322] ⏱ WLED auto-off in 60s (open)
 ```
+
+# License
+
+This project is licensed under the GNU General Public License v3.0 or later (GPL-3.0-or-later).
+
+See the LICENSE file for details.
+
+# Disclaimer
+
+KNX is a trademark of the KNX Association.
+
+This project is an independent implementation and is not affiliated with, endorsed by, or sponsored by the KNX Association.
