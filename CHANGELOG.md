@@ -19,7 +19,7 @@ for multiple releases on the same day.
 ### Fixed
 - Token-refresh reconnect no longer goes through `scheduleReconnect()`;
   `reconnectAttempts` is reset to 0 and `connect()` is called directly via
-  `setTimeout(connect, 0)` — eliminates the spurious "Reconnecting in 1s…" log
+  `setTimeout(connect, 0)` — eliminates the spurious "Reconnecting in 1 s…" log
   line and the unnecessary 1 s delay on every proactive token renewal.
 
 ### Changed

@@ -133,7 +133,7 @@ Once it expires, WLED is turned off via `{ on: false }`:
 | ⚪ closed   | `WLED_CLOSED_TIMEOUT_MS` | 2 min   | Spots turn off      |
 
 As soon as the door starts moving again (`moving = true`), any running timer is
-immediately cancelled — the strip stays on during movement. The timer restarts
+immediately canceled — the strip stays on during movement. The timer restarts
 after the next stable state is reached.
 
 Set a timeout to `0` to disable auto-off for that state:
@@ -147,7 +147,7 @@ WLED_CLOSED_TIMEOUT_MS=0  # spots stay on permanently
 
 Every completed door movement is timed and evaluated against a rolling
 statistics window. This allows detecting early signs of drive degradation —
-e.g. worn rollers, weakened springs, or a motor struggling under load.
+e.g., worn rollers, weakened springs, or a motor struggling under load.
 
 ### How it works
 
@@ -167,7 +167,7 @@ the actually reached end position (verified from the limit switches).
 
 Travel times are collected in separate ring buffers for `opening` and
 `closing`, each holding the last **20** completed runs (`STATS_WINDOW`).
-Once at least 3 runs are recorded per direction, min/max/mean are printed
+Once at least three runs are recorded per direction, min/max/mean are printed
 after every completed movement.
 
 If the current travel time exceeds the rolling mean by more than **20 %**
@@ -175,7 +175,7 @@ If the current travel time exceeds the rolling mean by more than **20 %**
 
 ### Plausibility check
 
-After every state update the script verifies that top and bottom limit
+After every state update, the script verifies that top and bottom limit
 switches are not both active at the same time. If they are, a `⚠` warning
 is logged immediately — this indicates a wiring or sensor fault.
 
@@ -228,7 +228,7 @@ force-refreshed.
 
 All three datapoints are subscribed in a single subscription message. On an
 unexpected connection drop, the script automatically reconnects with exponential
-backoff (1s → 2s → 4s → ... → max. 60s, up to 10 attempts).
+backoff (1 s → 2 s → 4 s → ... → max. 60 s, up to 10 attempts).
 
 ### Value Conversion
 
