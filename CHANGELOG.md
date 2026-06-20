@@ -11,7 +11,7 @@ for multiple releases on the same day.
 ## [v2026.06.20] - 2026-06-20
 
 ### Added
-- 🔒 Token-refresh safeguards and clean shutdown handling added.
+- Token-refresh safeguards and clean shutdown handling are added.
 
 ### Changed
 - Docker Compose updated to use development image from GitHub Container Registry.
