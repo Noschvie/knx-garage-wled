@@ -8,6 +8,10 @@ for multiple releases on the same day.
 
 ## [Unreleased]
 
+### Changed
+- Upgraded Node.js requirement to `>=26` (`package.json` and `package-lock.json` `engines` field).
+- Dockerfile base image updated from `node:24-alpine` to `node:26-alpine`.
+
 ## [v2026.06.20] - 2026-06-20
 
 ### Added
