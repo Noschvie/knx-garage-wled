@@ -9,7 +9,7 @@
     "start": "node knx-garage-wled.js"
   },
   "dependencies": {
-    "ws": "^8.21.3"
+    "ws": "^8.22.0"
   },
   "engines": {
     "node": ">=26"
